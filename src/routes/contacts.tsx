@@ -64,44 +64,44 @@ function ContactsPage() {
       description="أرقام الهاتف، العناوين، ووسائل التواصل الاجتماعي."
       icon={<PhoneCall className="h-5 w-5" />}
     >
-      <div className="space-y-6">
-        <section className="rounded-2xl border border-border/60 bg-background/80 p-6 shadow-card backdrop-blur-sm">
-          <h2 className="mb-4 flex items-center gap-2 text-sm font-semibold">
-            <Plus className="h-4 w-4 text-primary" />
+      <div className="space-y-5">
+        <section className="rounded-2xl border border-border/50 bg-card p-4 sm:p-6">
+          <h2 className="mb-4 flex items-center gap-2 text-base font-semibold text-foreground">
+            <span className="grid h-8 w-8 place-items-center rounded-lg bg-primary/10 text-primary">
+              <Plus className="h-4 w-4" />
+            </span>
             إضافة جهة تواصل جديدة
           </h2>
-          <div className="grid gap-3 sm:grid-cols-[160px_160px_1fr]">
+          <div className="grid gap-4 sm:grid-cols-[160px_160px_1fr]">
             <div>
-              <Label className="text-xs">النوع</Label>
+              <Label className="text-sm font-medium text-foreground">النوع</Label>
               <select value={draft.kind ?? "phone"} onChange={(e) => setDraft((d) => ({ ...d, kind: e.target.value }))}
-                className="mt-1 block w-full rounded-md border border-input bg-background px-2 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-ring">
+                className="mt-1.5 block h-11 w-full rounded-xl border border-input bg-background px-3 text-sm focus:outline-none focus:ring-2 focus:ring-ring">
                 {KINDS.map((k) => <option key={k} value={k}>{KIND_LABEL[k] ?? k}</option>)}
               </select>
             </div>
             <div>
-              <Label className="text-xs">تسمية</Label>
-              <Input className="mt-1" value={draft.label ?? ""} onChange={(e) => setDraft((d) => ({ ...d, label: e.target.value }))} placeholder="اختياري" />
+              <Label className="text-sm font-medium text-foreground">تسمية <span className="text-xs font-normal text-muted-foreground">(اختياري)</span></Label>
+              <Input className="mt-1.5 h-11 rounded-xl" value={draft.label ?? ""} onChange={(e) => setDraft((d) => ({ ...d, label: e.target.value }))} placeholder="مثال: الفرع الرئيسي" />
             </div>
             <div>
-              <Label className="text-xs">القيمة</Label>
-              <Input className="mt-1" value={draft.value ?? ""} onChange={(e) => setDraft((d) => ({ ...d, value: e.target.value }))} />
+              <Label className="text-sm font-medium text-foreground">القيمة <span className="text-destructive">*</span></Label>
+              <Input className="mt-1.5 h-11 rounded-xl" value={draft.value ?? ""} onChange={(e) => setDraft((d) => ({ ...d, value: e.target.value }))} placeholder="الرقم أو الرابط أو العنوان" />
             </div>
           </div>
-          <div className="mt-4 flex justify-end">
-            <Button
-              onClick={() => saveMut.mutate(draft)}
-              disabled={saveMut.isPending || !draft.value}
-              className="w-full bg-gradient-brand text-primary-foreground shadow-glow hover:opacity-95 sm:w-auto"
-            >
-              <Save className="ml-1 h-4 w-4" />حفظ
-            </Button>
-          </div>
+          <Button
+            onClick={() => saveMut.mutate(draft)}
+            disabled={saveMut.isPending || !draft.value}
+            className="mt-4 h-11 w-full rounded-xl sm:w-auto sm:px-8"
+          >
+            <Save className="ml-1 h-4 w-4" />حفظ
+          </Button>
         </section>
 
         <section className="grid gap-3 sm:grid-cols-2">
           {q.isLoading ? <p className="text-sm text-muted-foreground">جاري التحميل...</p> :
             (q.data ?? []).length === 0 ? (
-              <p className="sm:col-span-2 rounded-2xl border border-dashed border-border/60 bg-background/60 p-10 text-center text-sm text-muted-foreground">
+              <p className="sm:col-span-2 rounded-2xl border border-dashed border-border/60 bg-card/60 p-10 text-center text-sm text-muted-foreground">
                 لا توجد بيانات تواصل بعد — أضف أول جهة من الأعلى.
               </p>
             ) : (q.data ?? []).map((c) => {
@@ -109,18 +109,18 @@ function ContactsPage() {
               const isEditing = !!e;
               const v = { ...c, ...(e ?? {}) };
               return (
-                <div key={c.id} className="rounded-2xl border border-border/60 bg-background/80 p-4 shadow-card backdrop-blur-sm transition hover:border-primary/40">
+                <div key={c.id} className="rounded-2xl border border-border/50 bg-card p-4">
                   {isEditing ? (
-                    <div className="grid gap-2 sm:grid-cols-2">
+                    <div className="grid gap-3">
                       <select value={v.kind} onChange={(ev) => setEditing((p) => ({ ...p, [c.id]: { ...p[c.id], kind: ev.target.value } }))}
-                        className="rounded-md border border-input bg-background px-2 py-2 text-sm">
+                        className="h-11 rounded-xl border border-input bg-background px-3 text-sm">
                         {KINDS.map((k) => <option key={k} value={k}>{KIND_LABEL[k] ?? k}</option>)}
                       </select>
-                      <Input value={v.label ?? ""} onChange={(ev) => setEditing((p) => ({ ...p, [c.id]: { ...p[c.id], label: ev.target.value } }))} />
-                      <Input value={v.value} onChange={(ev) => setEditing((p) => ({ ...p, [c.id]: { ...p[c.id], value: ev.target.value } }))} />
-                      <div className="flex gap-2 sm:col-span-2">
-                        <Button size="sm" className="flex-1" onClick={() => saveMut.mutate({ ...v, id: c.id })}>حفظ</Button>
-                        <Button size="sm" variant="ghost" onClick={() => setEditing((p) => { const n = { ...p }; delete n[c.id]; return n; })}>إلغاء</Button>
+                      <Input className="h-11 rounded-xl" value={v.label ?? ""} onChange={(ev) => setEditing((p) => ({ ...p, [c.id]: { ...p[c.id], label: ev.target.value } }))} placeholder="تسمية" />
+                      <Input className="h-11 rounded-xl" value={v.value} onChange={(ev) => setEditing((p) => ({ ...p, [c.id]: { ...p[c.id], value: ev.target.value } }))} placeholder="القيمة" />
+                      <div className="flex gap-2">
+                        <Button className="h-11 flex-1 rounded-xl" onClick={() => saveMut.mutate({ ...v, id: c.id })}>حفظ</Button>
+                        <Button variant="outline" className="h-11 flex-1 rounded-xl" onClick={() => setEditing((p) => { const n = { ...p }; delete n[c.id]; return n; })}>إلغاء</Button>
                       </div>
                     </div>
                   ) : (
@@ -133,11 +133,11 @@ function ContactsPage() {
                         <p className="text-xs text-muted-foreground">{KIND_LABEL[c.kind] ?? c.kind}{c.label ? ` · ${c.label}` : ""}</p>
                         <p dir="auto" className="truncate text-sm font-semibold text-foreground">{c.value}</p>
                       </div>
-                      <div className="flex shrink-0 gap-1">
-                        <Button size="icon" variant="outline" aria-label="تعديل" onClick={() => setEditing((p) => ({ ...p, [c.id]: { ...c } }))}>
+                      <div className="flex shrink-0 gap-1.5">
+                        <Button size="icon" variant="outline" aria-label="تعديل" className="h-10 w-10 rounded-xl" onClick={() => setEditing((p) => ({ ...p, [c.id]: { ...c } }))}>
                           <Pencil className="h-4 w-4" />
                         </Button>
-                        <Button size="icon" variant="ghost" aria-label="حذف" className="text-destructive hover:text-destructive" onClick={() => { if (confirm("حذف؟")) delMut.mutate(c.id); }}>
+                        <Button size="icon" variant="ghost" aria-label="حذف" className="h-10 w-10 rounded-xl text-destructive hover:text-destructive" onClick={() => { if (confirm("حذف؟")) delMut.mutate(c.id); }}>
                           <Trash2 className="h-4 w-4" />
                         </Button>
                       </div>
