@@ -140,7 +140,7 @@ function ContactsPage() {
               dir={current.ltr ? "ltr" : "rtl"}
               value={value}
               onChange={(e) => setValue(e.target.value)}
-              placeholder={current.example}
+              placeholder={current.ltr ? current.example.replace("مثال: ", "") : current.example}
               className="h-12 rounded-xl text-base"
             />
             <Button type="submit" disabled={saveMut.isPending || !value.trim()} className="mt-4 h-12 w-full rounded-xl text-base">
