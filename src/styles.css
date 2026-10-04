@@ -247,6 +247,20 @@
   --hub-canvas: oklch(0.97 0.005 240);
   --hub-paper: oklch(1 0 0);
 
+  /* Contact channel brand hues (icons only, used on soft tints) */
+  --brand-whatsapp: oklch(0.68 0.17 150);
+  --brand-phone: oklch(0.58 0.083 217);
+  --brand-email: oklch(0.60 0.15 30);
+  --brand-address: oklch(0.60 0.18 25);
+  --brand-instagram: oklch(0.60 0.22 0);
+  --brand-facebook: oklch(0.55 0.18 260);
+  --brand-tiktok: oklch(0.25 0.02 260);
+  --brand-twitter: oklch(0.25 0.02 260);
+  --brand-snapchat: oklch(0.80 0.16 95);
+  --brand-telegram: oklch(0.65 0.13 235);
+  --brand-website: oklch(0.50 0.08 240);
+  --brand-other: oklch(0.55 0.022 245);
+
   --background: var(--hub-canvas);
   --foreground: var(--hub-ink);
   --card: var(--hub-paper);
